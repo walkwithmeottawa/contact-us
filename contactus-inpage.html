@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Walk With Me Ottawa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        #form {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-holder {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 12px 24px;
+            border: 2px solid #333333;
+            display: block;
+            margin: 40px auto 30px;
+            width: fit-content;
+            color: #333333;
+        }
+
+        p.big {
+            font-size: 28px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-weight: 300;
+            color: #333333;
+            text-align: center;
+        }
+
+        p small {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #666666;
+            text-align: center;
+            display: block;
+        }
+
+        p small a {
+            color: #00b1af;
+            text-decoration: underline;
+        }
+
+        span[contenteditable] {
+            display: inline-block;
+            min-width: 120px;
+            padding: 2px 8px;
+            border-bottom: 3px solid;
+            outline: none;
+            cursor: text;
+            transition: all 0.3s ease;
+        }
+
+        span[contenteditable]:focus {
+            background-color: rgba(0, 177, 175, 0.05);
+        }
+
+        span[contenteditable]:empty:before {
+            content: attr(data-placeholder);
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        .color1 {
+            border-color: #00b1af !important;
+        }
+
+        .color2 {
+            border-color: #eac47d !important;
+        }
+
+        .color3 {
+            border-color: #acd6d1 !important;
+        }
+
+        .color4 {
+            border-color: #d0cdc6 !important;
+        }
+
+        .color5 {
+            border-color: #ebf1ee !important;
+        }
+
+        .color6 {
+            border-color: #818184 !important;
+        }
+
+        .button-options,
+        .button-options-multiple {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0 40px;
+            justify-content: center;
+        }
+
+        .button-options button,
+        .button-options-multiple button {
+            background-color: #f5f5f5;
+            color: #333333;
+            border: 2px solid #e0e0e0;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .button-options button:hover,
+        .button-options-multiple button:hover {
+            background-color: #e8e8e8;
+            border-color: #00b1af;
+            transform: translateY(-2px);
+        }
+
+        .button-options button.selected {
+            background-color: #00b1af;
+            color: #ffffff;
+        }
+
+        .button-options-multiple button.selected {
+            background-color: #00b1af;
+            color: #ffffff;
+        }
+
+        .conditional-field {
+            display: none;
+        }
+
+        .conditional-field.show {
+            display: block;
+        }
+
+        #submit {
+            background-color: #00b1af;
+            color: #ffffff;
+            border: none;
+            padding: 18px 60px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 40px auto 20px;
+            font-family: inherit;
+            border-radius: 4px;
+        }
+
+        #submit:hover {
+            background-color: #009290;
+            transform: translateY(-2px);
+        }
+
+        #submit:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            background-color: #e8f7f7;
+            color: #00695c;
+            border: 2px solid #00b1af;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .error-message {
+            display: none;
+            background-color: #ffebee;
+            color: #c62828;
+            border: 2px solid #ef5350;
+            padding: 20px;
+            text-align: center;
+            font-size: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            p.big {
+                font-size: 22px;
+            }
+
+            h2 {
+                font-size: 14px;
+            }
+
+            .button-options button,
+            .button-options-multiple button {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            #submit {
+                padding: 15px 40px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="form">
+        <div class="row">
+            <div class="form-holder">
+                <h2>Contact Us</h2>
+                
+                <p class="big">Hello, my name is <span contenteditable="true" class="color1" id="fname" data-placeholder="first name"></span> <span contenteditable="true" class="color2" id="lname" data-placeholder="last name"></span>.</p>
+                
+                <p class="big">I can be reached at <span contenteditable="true" class="color3" id="phone" data-placeholder="phone number"></span>, or by email at <span contenteditable="true" class="color1" id="email" data-placeholder="your@email.com"></span>.</p>
+                
+                <p class="big">I live at <span contenteditable="true" class="color2" id="address" data-placeholder="your address"></span>.</p>
+                
+                <p class="big">I heard about you from <span contenteditable="true" class="color4" id="howheard" data-placeholder="where you heard about us"></span>.</p>
+
+                <h2>Service Requested</h2>
+                <p><small>I am interested in the following services:</small></p>
+                <div class="button-options-multiple" id="select-service">
+                    <button type="button">Training</button>
+                    <button type="button">Off Leash Group Hikes</button>
+                    <button type="button">Private Walks</button>
+                    <button type="button">Boarding</button>
+                    <button type="button">Other</button>
+                </div>
+
+                <h2 class="conditional-field" id="additional-details-header">Additional Details</h2>
+                
+                <p class="big conditional-field" id="training-field">If training: I'm interested in the <span contenteditable="true" class="color3" id="training-package" data-placeholder="package name"></span> package.</p>
+                
+                <p class="big conditional-field" id="boarding-field">If boarding: <span contenteditable="true" class="color5" id="boarding-details" data-placeholder="dates needed, child-friendly?, cat-friendly?"></span>.</p>
+                
+                <p class="big conditional-field" id="walking-field">If walking: <span contenteditable="true" class="color6" id="walking-details" data-placeholder="group/private? days? frequency?"></span>.</p>
+
+                <h2>About Your Dog</h2>
+                
+                <p class="big">My dog is <span contenteditable="true" class="color1" id="dog-info" data-placeholder="breed, age, training background"></span>.</p>
+                
+                <p class="big">My dog is <span contenteditable="true" class="color2" id="dog-with-dogs" data-placeholder="great/good/okay/nervous"></span> with other dogs.</p>
+                
+                <p class="big">Regarding crate training: <span contenteditable="true" class="color3" id="crate-trained" data-placeholder="crate habits and comfort level"></span>.</p>
+                
+                <p class="big">I <span contenteditable="true" class="color4" id="off-leash" data-placeholder="do/don't"></span> take my dog off leash.</p>
+                
+                <p class="big">My dog is <span contenteditable="true" class="color5" id="dog-in-car" data-placeholder="calm/anxious/excited"></span> in the car.</p>
+
+                <div class="success-message" id="success-message">
+                    Thank you! Your enquiry has been submitted successfully. We'll be in touch soon!
+                </div>
+                <div class="error-message" id="error-message">
+                    Please fill in all required fields.
+                </div>
+
+                <button type="button" id="submit">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle multi-select buttons for services
+        document.querySelectorAll('.button-options-multiple').forEach(container => {
+            container.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Toggle selected class
+                    this.classList.toggle('selected');
+                    
+                    // Update conditional fields visibility
+                    updateConditionalFields();
+                });
+            });
+        });
+
+        // Function to show/hide conditional fields based on selected services
+        function updateConditionalFields() {
+            const selectedServices = [];
+            document.querySelectorAll('#select-service button.selected').forEach(btn => {
+                selectedServices.push(btn.textContent.toLowerCase());
+            });
+
+            // Check if any relevant services are selected
+            const hasTraining = selectedServices.includes('training');
+            const hasBoarding = selectedServices.includes('boarding');
+            const hasWalking = selectedServices.includes('private walks') || selectedServices.includes('off leash group hikes');
+            const showAdditionalDetails = hasTraining || hasBoarding || hasWalking;
+
+            // Show/hide Additional Details header
+            const additionalDetailsHeader = document.getElementById('additional-details-header');
+            if (showAdditionalDetails) {
+                additionalDetailsHeader.classList.add('show');
+            } else {
+                additionalDetailsHeader.classList.remove('show');
+            }
+
+            // Show/hide training field
+            const trainingField = document.getElementById('training-field');
+            if (hasTraining) {
+                trainingField.classList.add('show');
+            } else {
+                trainingField.classList.remove('show');
+            }
+
+            // Show/hide boarding field
+            const boardingField = document.getElementById('boarding-field');
+            if (hasBoarding) {
+                boardingField.classList.add('show');
+            } else {
+                boardingField.classList.remove('show');
+            }
+
+            // Show/hide walking fields (both private walks and off leash group hikes)
+            const walkingField = document.getElementById('walking-field');
+            if (hasWalking) {
+                walkingField.classList.add('show');
+            } else {
+                walkingField.classList.remove('show');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('submit').addEventListener('click', function() {
+            const submitButton = this;
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Hide any previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            // Collect form data
+            const formData = {
+                fname: document.getElementById('fname').textContent.trim(),
+                lname: document.getElementById('lname').textContent.trim(),
+                phone: document.getElementById('phone').textContent.trim(),
+                email: document.getElementById('email').textContent.trim(),
+                address: document.getElementById('address').textContent.trim(),
+                howheard: document.getElementById('howheard').textContent.trim(),
+                trainingPackage: document.getElementById('training-package').textContent.trim(),
+                boardingDetails: document.getElementById('boarding-details').textContent.trim(),
+                walkingDetails: document.getElementById('walking-details').textContent.trim(),
+                dogWithDogs: document.getElementById('dog-with-dogs').textContent.trim(),
+                crateTrained: document.getElementById('crate-trained').textContent.trim(),
+                offLeash: document.getElementById('off-leash').textContent.trim(),
+                dogInCar: document.getElementById('dog-in-car').textContent.trim(),
+                dogInfo: document.getElementById('dog-info').textContent.trim(),
+                services: []
+            };
+
+            // Get selected services
+            document.querySelectorAll('#select-service button.selected').forEach(btn => {
+                formData.services.push(btn.textContent);
+            });
+
+            // Basic validation
+            if (!formData.fname || !formData.lname || !formData.phone || !formData.email || !formData.dogWithDogs || !formData.crateTrained || !formData.dogInfo) {
+                errorMessage.textContent = 'Please fill in your name, phone, email, and all dog information fields.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Validate email format
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(formData.email)) {
+                errorMessage.textContent = 'Please enter a valid email address.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Create email body
+            const emailBody = `
+New Contact Form Submission - InPage
+
+CONTACT INFORMATION:
+Name: ${formData.fname} ${formData.lname}
+Phone: ${formData.phone}
+Email: ${formData.email}
+Address: ${formData.address}
+How they heard about us: ${formData.howheard}
+
+SERVICES REQUESTED:
+${formData.services.join(', ') || 'None selected'}
+
+TRAINING PACKAGE:
+${formData.trainingPackage || 'N/A'}
+
+BOARDING DETAILS:
+${formData.boardingDetails || 'N/A'}
+
+WALKING DETAILS:
+${formData.walkingDetails || 'N/A'}
+
+DOG INFORMATION:
+About the dog: ${formData.dogInfo}
+How is your dog with other dogs: ${formData.dogWithDogs}
+Crate trained: ${formData.crateTrained}
+Off leash: ${formData.offLeash}
+In the car: ${formData.dogInCar}
+            `.trim();
+
+            // Disable submit button
+            submitButton.disabled = true;
+            submitButton.textContent = 'SENDING...';
+
+            // Send using FormSubmit.co
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'https://formsubmit.co/info@walkwithmeottawa.com';
+            form.style.display = 'none';
+
+            // Add form fields
+            const fields = {
+                '_subject': 'New Contact Form from ' + formData.fname + ' ' + formData.lname,
+                '_captcha': 'false',
+                '_template': 'table',
+                'message': emailBody
+            };
+
+            for (const [key, value] of Object.entries(fields)) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            
+            // Show success message
+            successMessage.style.display = 'block';
+            
+            // Reset form after short delay
+            setTimeout(function() {
+                document.getElementById('fname').textContent = '';
+                document.getElementById('lname').textContent = '';
+                document.getElementById('phone').textContent = '';
+                document.getElementById('email').textContent = '';
+                document.getElementById('address').textContent = '';
+                document.getElementById('howheard').textContent = '';
+                document.getElementById('training-package').textContent = '';
+                document.getElementById('boarding-details').textContent = '';
+                document.getElementById('walking-details').textContent = '';
+                document.getElementById('dog-with-dogs').textContent = '';
+                document.getElementById('crate-trained').textContent = '';
+                document.getElementById('off-leash').textContent = '';
+                document.getElementById('dog-in-car').textContent = '';
+                document.getElementById('dog-info').textContent = '';
+                
+                // Clear button selections
+                document.querySelectorAll('button.selected').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // Reset submit button
+                submitButton.disabled = false;
+                submitButton.textContent = 'SUBMIT';
+                
+                // Hide success message after 5 seconds
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            }, 500);
+            
+            // Submit form in background
+            form.submit();
+        });
+
+        // Add placeholder behavior for contenteditable spans
+        document.querySelectorAll('span[contenteditable]').forEach(span => {
+            span.addEventListener('focus', function() {
+                if (this.textContent === this.getAttribute('data-placeholder')) {
+                    this.textContent = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
