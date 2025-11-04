@@ -258,11 +258,11 @@
 
                 <h2 class="conditional-field" id="additional-details-header">Additional Details</h2>
                 
-                <p class="big conditional-field" id="training-field">If training: I'm interested in the <span contenteditable="true" class="color3" id="training-package" data-placeholder="package name"></span> package.</p>
+                <p class="big conditional-field" id="training-field">Training: I'm interested in the <span contenteditable="true" class="color3" id="training-package" data-placeholder="package name"></span> package.</p>
                 
-                <p class="big conditional-field" id="boarding-field">If boarding: <span contenteditable="true" class="color5" id="boarding-details" data-placeholder="dates needed, child-friendly?, cat-friendly?"></span>.</p>
+                <p class="big conditional-field" id="boarding-field">Boarding: <span contenteditable="true" class="color5" id="boarding-details" data-placeholder="dates needed, child-friendly?, cat-friendly?"></span>.</p>
                 
-                <p class="big conditional-field" id="walking-field">If walking: <span contenteditable="true" class="color6" id="walking-details" data-placeholder="group/private? days? frequency?"></span>.</p>
+                <p class="big conditional-field" id="walking-field">Walking: <span contenteditable="true" class="color6" id="walking-details" data-placeholder="group/private? days? frequency?"></span>.</p>
 
                 <h2>About Your Dog</h2>
                 
@@ -443,6 +443,7 @@ In the car: ${formData.dogInCar}
                 '_subject': 'New Contact Form from ' + formData.fname + ' ' + formData.lname,
                 '_captcha': 'false',
                 '_template': 'table',
+                '_next': 'https://walkwithmeottawa.github.io/dog-training-form/thankyou-inpage.html',
                 'message': emailBody
             };
 
