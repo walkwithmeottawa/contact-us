@@ -293,10 +293,7 @@
         document.querySelectorAll('.button-options-multiple').forEach(container => {
             container.querySelectorAll('button').forEach(button => {
                 button.addEventListener('click', function() {
-                    // Toggle selected class
                     this.classList.toggle('selected');
-                    
-                    // Update conditional fields visibility
                     updateConditionalFields();
                 });
             });
@@ -309,43 +306,15 @@
                 selectedServices.push(btn.textContent.toLowerCase());
             });
 
-            // Check if any relevant services are selected
             const hasTraining = selectedServices.includes('training');
             const hasBoarding = selectedServices.includes('boarding');
             const hasWalking = selectedServices.includes('private walks') || selectedServices.includes('off leash group hikes');
             const showAdditionalDetails = hasTraining || hasBoarding || hasWalking;
 
-            // Show/hide Additional Details header
-            const additionalDetailsHeader = document.getElementById('additional-details-header');
-            if (showAdditionalDetails) {
-                additionalDetailsHeader.classList.add('show');
-            } else {
-                additionalDetailsHeader.classList.remove('show');
-            }
-
-            // Show/hide training field
-            const trainingField = document.getElementById('training-field');
-            if (hasTraining) {
-                trainingField.classList.add('show');
-            } else {
-                trainingField.classList.remove('show');
-            }
-
-            // Show/hide boarding field
-            const boardingField = document.getElementById('boarding-field');
-            if (hasBoarding) {
-                boardingField.classList.add('show');
-            } else {
-                boardingField.classList.remove('show');
-            }
-
-            // Show/hide walking fields (both private walks and off leash group hikes)
-            const walkingField = document.getElementById('walking-field');
-            if (hasWalking) {
-                walkingField.classList.add('show');
-            } else {
-                walkingField.classList.remove('show');
-            }
+            document.getElementById('additional-details-header').classList.toggle('show', showAdditionalDetails);
+            document.getElementById('training-field').classList.toggle('show', hasTraining);
+            document.getElementById('boarding-field').classList.toggle('show', hasBoarding);
+            document.getElementById('walking-field').classList.toggle('show', hasWalking);
         }
 
         // Handle form submission
@@ -354,7 +323,6 @@
             const successMessage = document.getElementById('success-message');
             const errorMessage = document.getElementById('error-message');
             
-            // Hide any previous messages
             successMessage.style.display = 'none';
             errorMessage.style.display = 'none';
 
@@ -377,19 +345,17 @@
                 services: []
             };
 
-            // Get selected services
             document.querySelectorAll('#select-service button.selected').forEach(btn => {
                 formData.services.push(btn.textContent);
             });
 
-            // Basic validation
+            // Validation
             if (!formData.fname || !formData.lname || !formData.phone || !formData.email || !formData.dogWithDogs || !formData.crateTrained || !formData.dogInfo) {
                 errorMessage.textContent = 'Please fill in your name, phone, email, and all dog information fields.';
                 errorMessage.style.display = 'block';
                 return;
             }
 
-            // Validate email format
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(formData.email)) {
                 errorMessage.textContent = 'Please enter a valid email address.';
@@ -397,106 +363,79 @@
                 return;
             }
 
-            // Create email body
-            const emailBody = `
-New Contact Form Submission - InPage
-
-CONTACT INFORMATION:
-Name: ${formData.fname} ${formData.lname}
-Phone: ${formData.phone}
-Email: ${formData.email}
-Address: ${formData.address}
-How they heard about us: ${formData.howheard}
-
-SERVICES REQUESTED:
-${formData.services.join(', ') || 'None selected'}
-
-TRAINING PACKAGE:
-${formData.trainingPackage || 'N/A'}
-
-BOARDING DETAILS:
-${formData.boardingDetails || 'N/A'}
-
-WALKING DETAILS:
-${formData.walkingDetails || 'N/A'}
-
-DOG INFORMATION:
-About the dog: ${formData.dogInfo}
-How is your dog with other dogs: ${formData.dogWithDogs}
-Crate trained: ${formData.crateTrained}
-Off leash: ${formData.offLeash}
-In the car: ${formData.dogInCar}
-            `.trim();
-
-            // Disable submit button
             submitButton.disabled = true;
             submitButton.textContent = 'SENDING...';
 
-            // Send using FormSubmit.co
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'https://formsubmit.co/info@walkwithmeottawa.com';
-            form.style.display = 'none';
-
-            // Add form fields
-            const fields = {
-                '_subject': 'New Contact Form from ' + formData.fname + ' ' + formData.lname,
-                '_captcha': 'false',
-                '_template': 'box',
-                '_next': 'https://walkwithmeottawa.github.io/dog-training-form/thankyou-inpage.html',
-                'message': emailBody
-            };
-
-            for (const [key, value] of Object.entries(fields)) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = value;
-                form.appendChild(input);
-            }
-
-            document.body.appendChild(form);
-            
-            // Show success message
-            successMessage.style.display = 'block';
-            
-            // Reset form after short delay
-            setTimeout(function() {
-                document.getElementById('fname').textContent = '';
-                document.getElementById('lname').textContent = '';
-                document.getElementById('phone').textContent = '';
-                document.getElementById('email').textContent = '';
-                document.getElementById('address').textContent = '';
-                document.getElementById('howheard').textContent = '';
-                document.getElementById('training-package').textContent = '';
-                document.getElementById('boarding-details').textContent = '';
-                document.getElementById('walking-details').textContent = '';
-                document.getElementById('dog-with-dogs').textContent = '';
-                document.getElementById('crate-trained').textContent = '';
-                document.getElementById('off-leash').textContent = '';
-                document.getElementById('dog-in-car').textContent = '';
-                document.getElementById('dog-info').textContent = '';
+            // Send to Basin
+            fetch('https://usebasin.com/f/365a1d6ea72c', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: formData.fname + ' ' + formData.lname,
+                    email: formData.email,
+                    phone: formData.phone,
+                    address: formData.address,
+                    howheard: formData.howheard,
+                    services: formData.services.join(', '),
+                    trainingPackage: formData.trainingPackage,
+                    boardingDetails: formData.boardingDetails,
+                    walkingDetails: formData.walkingDetails,
+                    dogInfo: formData.dogInfo,
+                    dogWithDogs: formData.dogWithDogs,
+                    crateTrained: formData.crateTrained,
+                    offLeash: formData.offLeash,
+                    dogInCar: formData.dogInCar
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                successMessage.style.display = 'block';
                 
-                // Clear button selections
-                document.querySelectorAll('button.selected').forEach(btn => {
-                    btn.classList.remove('selected');
-                });
-                
-                // Reset submit button
+                // Reset form
+                setTimeout(function() {
+                    document.getElementById('fname').textContent = '';
+                    document.getElementById('lname').textContent = '';
+                    document.getElementById('phone').textContent = '';
+                    document.getElementById('email').textContent = '';
+                    document.getElementById('address').textContent = '';
+                    document.getElementById('howheard').textContent = '';
+                    document.getElementById('training-package').textContent = '';
+                    document.getElementById('boarding-details').textContent = '';
+                    document.getElementById('walking-details').textContent = '';
+                    document.getElementById('dog-with-dogs').textContent = '';
+                    document.getElementById('crate-trained').textContent = '';
+                    document.getElementById('off-leash').textContent = '';
+                    document.getElementById('dog-in-car').textContent = '';
+                    document.getElementById('dog-info').textContent = '';
+                    
+                    document.querySelectorAll('button.selected').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    
+                    updateConditionalFields();
+                    
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'SUBMIT';
+                    
+                    setTimeout(function() {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                }, 500);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessage.textContent = 'There was an error submitting your form. Please try again or email us directly at info@walkwithmeottawa.com';
+                errorMessage.style.display = 'block';
                 submitButton.disabled = false;
                 submitButton.textContent = 'SUBMIT';
-                
-                // Hide success message after 5 seconds
-                setTimeout(function() {
-                    successMessage.style.display = 'none';
-                }, 5000);
-            }, 500);
-            
-            // Submit form in background
-            form.submit();
+            });
         });
 
-        // Add placeholder behavior for contenteditable spans
+        // Placeholder behavior
         document.querySelectorAll('span[contenteditable]').forEach(span => {
             span.addEventListener('focus', function() {
                 if (this.textContent === this.getAttribute('data-placeholder')) {
